@@ -93,19 +93,62 @@ void sortImproved(int *arr, int first, int last) {
 	}
 }
 
+//Блочная сортировка
+void sortBlock(int *arr, int sizeX) {
+	const int max = sizeX;
+	const int buck = 10;
+	
+	int buckets[buck][max+1];
+	for(int i = 0; i < buck; i++) {
+		buckets[i][max] = 0;
+	}
+	
+	for(int digit = 1; digit < 1000000; digit *= 10) {
+		for(int i = 0; i < max; i++) {
+			int d = (arr[i]/digit) % buck;
+			int counter = buckets[d][max];
+			if(arr[i] % 2 == 0) {
+				buckets[d][counter] = arr[i];
+				counter++;
+				buckets[d][max] = counter;
+			}
+			else {
+				buckets[d][counter] = arr[i];
+			}
+		}
+		int idx = 0;
+		for(int i = 0; i < buck; i++) {
+			for(int j = 0; j < buckets[i][max]; j++) {
+				// if(arr[i] % 2 ==0) {
+					// arr[idx++] = arr[i];
+				// }
+				// else {
+					arr[idx++] = buckets[i][j];
+				// }
+			}
+			buckets[i][max] = 0;
+		}
+	}
+}
+
 int main()
 {
 	//1. Описать в коде улучшенный алгоритм быстрой сортировки
-	int sizeX = 10;
+	printf("1. Задание\n");
+	int sizeX = 8;
 	int array1[sizeX];
 	
 	initiozalitionArrayRandom(array1, sizeX);
 	printArray(array1, sizeX);
-	sortImproved(array1, 0, sizeX-1);
-	printArray(array1, sizeX);
+	// sortImproved(array1, 0, sizeX-1);
+	// printArray(array1, sizeX);
 	
 	//2. Сортировать в массиве целых положительных чисел только чётные числа, нечётные оставив на своих местах при помощи алгоритма блочной сортировки, то есть массив вида [0 2 8 3 4 6 5 9 8 2 7 3] превратить в [0 2 2 3 4 4 5 9 8 8 7 3]
-	//в процессе написания
+	printf("\n2. Задание\n");
+	// initiozalitionArrayRandom(array1, sizeX);
+	printArray(array1, sizeX);
+	sortBlock(array1, sizeX);
+	printArray(array1, sizeX);
 	
 	return 0;
 }
